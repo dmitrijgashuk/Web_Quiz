@@ -1,2 +1,2 @@
 # Web_Quiz
-Game quiz. 
+Turn-based quiz game. 
