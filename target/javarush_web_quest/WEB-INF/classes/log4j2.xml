@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration status="warn">
+
+    <Properties>
+        <Property name="logdir">/home/dmytro/IdeaProjects/javarush_web_quest/logs</Property>
+        <Property name="layout">%d{yyyy-dd-MM HH:mm:ss,SSS} %-5level %logger{1}: %msg%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="LogToConsole" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${layout}"/>
+        </Console>
+
+        <RollingFile name="RollingFile" fileName="${logdir}/web_quest.log"
+                     filePattern="${logdir}/web_quest.%d{yyyy-MM-dd-HH-mm }.log" append="true">
+            <PatternLayout pattern="${layout}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+
+            <DefaultRolloverStrategy>
+                <Delete basePath="logs/">
+                    <IfFileName glob="logs/hippodrome.*.log" />
+                    <IfLastModified age="p7d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <!--<Logger name="org/dgashuk/web_game" level="all">
+            <AppenderRef ref="RollingFile"/>
+            <AppenderRef ref="LogToConsole" />
+        </Logger>-->
+
+        <Root level="all">
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+
+    </Loggers>
+</Configuration>
