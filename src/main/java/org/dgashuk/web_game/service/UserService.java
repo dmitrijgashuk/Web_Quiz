@@ -23,7 +23,7 @@ public class UserService {
         this.game = game;
     }
 
-    public User createNewUser(String userName) { // todo
+    public User createNewUser(String userName) {
         if (userName.isBlank()) {
             String errorMessage = "UserName in method 'createNewUser' parameter is empty or null";
             log.error("errorMessage");
@@ -49,7 +49,7 @@ public class UserService {
             throw new UserServiceException("UserName parameter is empty or null");
         }
 
-        Iterator<Map.Entry<Integer, User>> iterator = users.iterator(); // todo rewrite on stream style
+        Iterator<Map.Entry<Integer, User>> iterator = users.iterator();
         while (iterator.hasNext()) {
             Map.Entry<Integer, User> next = iterator.next();
             User value = next.getValue();

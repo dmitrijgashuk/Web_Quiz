@@ -67,7 +67,7 @@ public class LocationService {
         return item;
     }
 
-    public List<Location> getAvailableLocation(User user) { // todo rewrite like stream
+    public List<Location> getAvailableLocation(User user) {
         List<Location> availableLocationList = new ArrayList<>();
 
         String currentLocation = user.getCurrentLocation();
