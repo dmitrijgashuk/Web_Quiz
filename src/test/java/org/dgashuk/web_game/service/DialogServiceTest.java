@@ -49,7 +49,7 @@ class DialogServiceTest {
     @Test
     void test_getNpcDialog_throw_NumberFormatException() {
         assertThrows(RuntimeException.class, () -> {
-            dialogService.getNpcDialog(npc,null);
+            dialogService.getNpcDialog(npc,"null");
         });
     }
 
@@ -90,7 +90,4 @@ class DialogServiceTest {
         assertEquals(testDialog,actual);
     }
 
-    @Test
-    void processingQuestDialog() { // todo
-    }
 }

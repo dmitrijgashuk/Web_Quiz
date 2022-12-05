@@ -35,7 +35,7 @@
             <AppenderRef ref="LogToConsole" />
         </Logger>-->
 
-        <Root level="all">
+        <Root level="error">
             <AppenderRef ref="RollingFile"/>
         </Root>
 
