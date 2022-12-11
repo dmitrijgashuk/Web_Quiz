@@ -1,4 +1,4 @@
-FROM maven:3.8-amazoncorretto:11 AS MAVEN_BUILD
+FROM maven:3.8-amazoncorretto-11 AS MAVEN_BUILD
 COPY ./ ./
 RUN mvn clean package
 
