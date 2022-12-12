@@ -4,6 +4,7 @@ import org.dgashuk.web_game.model.User;
 import org.dgashuk.web_game.service.UserService;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +20,8 @@ public class FinishServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        userService = (UserService) getServletContext().getAttribute("userService");
+        ServletContext servletContext = config.getServletContext();
+        userService = (UserService) servletContext.getAttribute("userService");
     }
 
     @Override
