@@ -13,14 +13,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.times;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class LocationServiceTest {
@@ -28,10 +26,10 @@ class LocationServiceTest {
     @Mock
     User user;
 
-    GameData gameData;
-
     @Mock
     HttpServletRequest request;
+
+    GameData gameData;
 
     LocationService locationService;
 
@@ -86,6 +84,24 @@ class LocationServiceTest {
 
         assertEquals(questList, finishedQuests);
 
+    }
+
+    @Test
+    void test_getCorrectFinishQuests(){
+        Map<Integer, Quest> quests = gameData.getQuests();
+        Quest quest = quests.get(1);
+
+        doReturn("Exit").when(user).getCurrentLocation();
+
+        List<Quest> allQuestUserList = new ArrayList<>(){{
+           add(quests.get(1));
+           add(quests.get(2));
+        }};
+
+        doReturn(allQuestUserList).when(user).getQuestList();
+
+        List<Quest> finishedQuests = locationService.getFinishedQuests(user);
+        assertEquals(1,finishedQuests.size());
     }
 
     @Test

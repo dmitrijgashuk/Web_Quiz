@@ -52,8 +52,6 @@ public class DialogServlet extends HttpServlet {
         if (endDialog != null && endDialog.equals("exit")) {
             session.setAttribute("npc", null);
             response.sendRedirect("location");
-            log.debug("if jsp return parameter - endDialog: " + endDialog + " method calls sendRedirect or forward to /start");
-            log.debug("if block call 'return' ");
             return;
         }
 

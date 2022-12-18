@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class LocationService {
     private static final Logger log = LoggerFactory.getLogger(LocationService.class);
@@ -27,7 +27,7 @@ public class LocationService {
     public void putLocationDataToRequest(User user, HttpServletRequest request) {
         Location location = getLocationByName(user.getCurrentLocation());
 
-        List<Item> itemsOnTheLocation = availableItemsOnTheLocation(user,location);
+        List<Item> itemsOnTheLocation = availableItemsOnTheLocation(user, location);
 
         LocationData locationData = LocationData.builder()
                 .user(user)
@@ -68,19 +68,14 @@ public class LocationService {
     }
 
     public List<Location> getAvailableLocation(User user) {
-        List<Location> availableLocationList = new ArrayList<>();
-
         String currentLocation = user.getCurrentLocation();
         Location location = getLocationByName(currentLocation);
 
-        List<String> exits = location.getExits();
-        for (String exit : exits) {
-            Location existLocation = getLocationByName(exit);
-            if (existLocation.isLocationAvailable(user)) {
-                availableLocationList.add(existLocation);
-            }
-        }
-        return availableLocationList;
+       return location.getExits().stream()
+                .map( locationLikeString -> getLocationByName(locationLikeString))
+                .filter(locationObject -> locationObject.isLocationAvailable(user))
+                .collect(Collectors.toList());
+
     }
 
     public Location getLocationByName(String locationName) {
@@ -88,29 +83,20 @@ public class LocationService {
         return locations.get(locationName);
     }
 
-    public List<Quest> getFinishedQuests(User user) {// todo rewrite look like stream
-        List<Quest> finishQuests = new ArrayList<>();
-        List<Quest> questList = user.getQuestList();
-        for (Quest quest : questList) {
-            if (quest.checkFinishQuest(user)) {
-                finishQuests.add(quest);
-            }
-        }
-        return finishQuests;
+    public List<Quest> getFinishedQuests(User user) {
+        return user.getQuestList().stream()
+                .filter(quest -> quest.checkFinishQuest(user))
+                .collect(Collectors.toList());
+
     }
 
     public List<Quest> getAvailableQuests(User user) {
-        List<Quest> availableList = new ArrayList<>();
-        List<Quest> questList = user.getQuestList();
-        for (Quest quest : questList) {
-            if (!quest.checkFinishQuest(user)) {
-                availableList.add(quest);
-            }
-        }
-        return availableList;
+        return user.getQuestList().stream()
+                .filter(quest -> !quest.checkFinishQuest(user))
+                .collect(Collectors.toList());
     }
 
-    private List<Item> availableItemsOnTheLocation(User user, Location location){
+    private List<Item> availableItemsOnTheLocation(User user, Location location) {
         List<Item> items = new ArrayList<>(location.getItems());
         items.removeIf(nextItem -> user.getItems().contains(nextItem));
         return items;
